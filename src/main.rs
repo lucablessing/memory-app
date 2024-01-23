@@ -64,6 +64,7 @@ slint::slint! {
 
         width: 64px;
         height: 64px;
+        border-radius: 10px;
         background: solved ? #34CE57 : #3960d5;
         animate background { duration: 800ms; }
 
@@ -77,17 +78,19 @@ slint::slint! {
         Rectangle {
             background: #193076;
             x: 0px;
-            width: open_curtain ? 0px : (parent.width / 2);
+            width: open_curtain ? 0px : (parent.width / 2) + parent.border-radius;
             height: parent.height;
+            border-radius: parent.border-radius;
             animate width { duration: 250ms; easing: ease-in; }
         }
 
         // Right curtain
         Rectangle {
             background: #193076;
-            x: open_curtain ? parent.width : (parent.width / 2);
-            width: open_curtain ? 0px : (parent.width / 2);
+            x: open_curtain ? parent.width : (parent.width / 2) - parent.border-radius;
+            width: open_curtain ? 0px : (parent.width / 2) + parent.border-radius;
             height: parent.height;
+            border-radius: parent.border-radius;
             animate width { duration: 250ms; easing: ease-in; }
             animate x { duration: 250ms; easing: ease-in; }
         }
@@ -101,8 +104,8 @@ slint::slint! {
     }
 
     export component MainWindow inherits Window {
-        width: 326px;
-        height: 326px;
+        width: 306px;
+        height: 306px;
 
         callback check_if_pair_solved();
         in property <bool> disable_tiles;
@@ -117,9 +120,10 @@ slint::slint! {
             { image: @image-url("icons/motorcycle.png") },
             { image: @image-url("icons/video.png") },
         ];
+
         for tile[i] in memory_tiles : MemoryTile {
-            x: mod(i, 4) * 74px;
-            y: floor(i / 4) * 74px;
+            x: mod(i, 4) * 74px + 10px;
+            y: floor(i / 4) * 74px + 10px;
             width: 64px;
             height: 64px;
             icon: tile.image;
